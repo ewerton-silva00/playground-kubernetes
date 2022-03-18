@@ -1,0 +1,10 @@
+---
+containerd_install: true
+containerd_version: 1.6.1
+containerd_data_dir: ''
+
+kubernetes_install: true
+kubernetes_packages_version: 1.23.5-00
+kubernetes_version: 1.23.5
+kubernetes_pod_network_cidr: ''
+kubernetes_nonroot_user: vagrant

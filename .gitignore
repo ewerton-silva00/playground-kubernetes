@@ -1,0 +1,9 @@
+.vagrant/
+.vscode/
+
+# Python Virtual Environment Files
+bin/
+lib/
+share/
+pyenv.cfg
+lib64

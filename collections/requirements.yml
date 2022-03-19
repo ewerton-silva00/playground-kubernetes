@@ -9,4 +9,4 @@ collections:
 
   - name: kubernetes.core
     version: 2.2.2
-    srouce: https://galaxy.ansible.com
+    source: https://galaxy.ansible.com

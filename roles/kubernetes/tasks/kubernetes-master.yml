@@ -71,23 +71,23 @@
     --pod-network-cidr="{{ kubernetes_pod_network_cidr | default('10.244.0.0/16') }}"
   tags: kubernetes
 
-- name: Kubernetes | Create ~/.kube directory to {{ kubernetes_nonroot_user }}
+- name: Kubernetes | Create ~/.kube directory to {{ kubernetes_nonroot_user | default('vagrant') }}
   ansible.builtin.file:
-    path: "/home/{{ kubernetes_nonroot_user }}/.kube"
+    path: "/home/{{ kubernetes_nonroot_user | default('vagrant') }}/.kube"
     state: directory
-    owner: "{{ kubernetes_nonroot_user }}"
-    group: "{{ kubernetes_nonroot_user }}"
+    owner: "{{ kubernetes_nonroot_user | default('vagrant') }}"
+    group: "{{ kubernetes_nonroot_user | default('vagrant') }}"
     mode: 0700
   register: kubeconfig_directory
   tags: kubernetes
 
-- name: Kubernetes | Setup kubeconfig file for {{ kubernetes_nonroot_user }} user
+- name: Kubernetes | Setup kubeconfig file for {{ kubernetes_nonroot_user | default('vagrant') }} user
   ansible.builtin.copy:
     src: /etc/kubernetes/admin.conf
     dest: "{{ kubeconfig_directory.path }}/config"
-    owner: "{{ kubernetes_nonroot_user }}"
-    group: "{{ kubernetes_nonroot_user }}"
-    mode: 0644
+    owner: "{{ kubernetes_nonroot_user | default('vagrant') }}"
+    group: "{{ kubernetes_nonroot_user | default('vagrant') }}"
+    mode: 0600
     remote_src: yes
   tags: kubernetes
 

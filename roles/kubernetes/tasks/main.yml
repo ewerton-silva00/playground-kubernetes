@@ -10,3 +10,9 @@
   tags:
     - kubernetes
   when: kubernetes_install | bool
+
+- name: Helm | Include task list in play
+  include_tasks: helm.yml
+  tags:
+    - helm
+  when: helm_install | bool

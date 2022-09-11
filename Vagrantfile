@@ -2,7 +2,9 @@
 # vi: set ft=ruby :
 
 servers = {
-  'k8s-master' => { 'ip' => '10.10.10.10', 'memory' => '4096', 'cpus' => '4', 'disk' => '/tmp/tpxBQAzZif8c4berq75K.vdi' }
+  'master-01' => { 'ip' => '10.10.10.10', 'memory' => '2048', 'cpus' => '2', 'disk' => '/tmp/tpxBQAzZif8c4berq75K.vdi' },
+  'worker-01' => { 'ip' => '10.10.10.11', 'memory' => '2048', 'cpus' => '2', 'disk' => '/tmp/6KzmetxXetd529zIFFZ4.vdi' },
+  'worker-02' => { 'ip' => '10.10.10.12', 'memory' => '2048', 'cpus' => '2', 'disk' => '/tmp/tw3RbtE0eb2kCHp1CbfL.vdi' }
 }
 
 Vagrant.configure("2") do |config|
@@ -23,8 +25,8 @@ Vagrant.configure("2") do |config|
         vb.gui = false
         vb.cpus = "#{conf['cpus']}"
         vb.memory = "#{conf['memory']}"
-        # --- Add second disk with 40GB. Define the variable named 'disk'. e.g. 'disk' => '/tmp/tpxBQAzZif8c4berq75K.vdi'
-        vb.customize ['createhd', '--filename', "#{conf['disk']}", '--size', 40 * 1024]
+        # --- Add second disk with 10GB. Define the variable named 'disk'. e.g. 'disk' => '/tmp/tpxBQAzZif8c4berq75K.vdi'
+        vb.customize ['createhd', '--filename', "#{conf['disk']}", '--size', 10 * 1024]
         vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', "#{conf['disk']}"]
       end
 
@@ -32,9 +34,9 @@ Vagrant.configure("2") do |config|
         # Configure second disk
         sudo parted --script --align optimal /dev/sdb mklabel gpt -- mkpart primary ext4 0% 100%
         sudo mkfs --type ext4 /dev/sdb1
-        sudo mkdir /mnt/containerd
-        sudo mount --types ext4 /dev/sdb1 /mnt/containerd
-        sudo su -c "echo '/dev/sdb1 /mnt/containerd ext4 defaults 0 0' >> /etc/fstab"
+        sudo mkdir /mnt/data
+        sudo mount --types ext4 /dev/sdb1 /mnt/data
+        sudo su -c "echo '/dev/sdb1 /mnt/data ext4 defaults 0 0' >> /etc/fstab"
         # Update all packages to their latest version
         sudo apt update && sudo apt upgrade -y
         hostnamectl
